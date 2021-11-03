@@ -1,0 +1,719 @@
+#+TITLE: Practica 3
+#+author: Monsalvo Bolaños Melissa Monserrat y Romero Andrade Cristian
+#+options: toc:nil title:nil
+#+latex_class: koma-script
+#+latex_compiler: xelatex
+
+* Introducción
+Las máquinas de estados finitos nos sirven para realizar procesos bien
+definidos en un tiempo discreto. Reciben una entrada, hacen un proceso y nos
+entregan una salida.
+La descripción de estas máquinas de estados finitos, en lenguaje de alto nivel,
+se realiza de forma sencilla, pero en algunas ocasiones esta descripción
+consume muchos recursos del dispositivo, y además el tiempo de respuesta que
+dan los retardos de propagación es difícil de entender y controlar. De ahí la
+necesidad de aprender a describirlos de diferentes formas en busca del diseño
+más eficiente, por lo que es fundamental utilizar una arquitectura basada en el
+uso de un bloque ROM de la FPGA.
+* Objetivo
+Familiarizar al alumno en el conocimiento de construcción de máquinas de
+estados usando direccionamiento de memorias con el método de
+direccionamiento por trayectoria.
+* Desarrollo
+El _direccionamiento por trayectoria_ guarda el estado siguiente y las salidas de
+cada estado de la carta ASM en una localidad de memoria. La porción de la
+memoria que indica el estado siguiente es llamada *LIGA*, mientras que la
+segunda porción de la memoria es usada para las *SALIDAS*.
+#+caption: Direccionamiento por trayectoria
+#+attr_latex: :width 0.9\textwidth
+[[./img/1.png]]
+
+1. Dada la carta ASM de la figura [[fig:2][2]], encuentre el contenido de memoria
+   utilizando el direccionamiento por trayectoria. Recuerde que antes de
+   construir la tabla se debe asignar a cada estado de la carta ASM una
+   representación binaria. Así mismo, recuerde que para cada estado es necesario
+   considerar todas las posibles combinaciones de las variables de entrada, aun
+   cuando algunas de ellas no se utilicen en determinado estado
+   #+caption: Carta ASM
+   #+label: fig:2
+   #+attr_latex: :width 0.9\textwidth
+   [[./img/2.png]]
+2. Naturalmente asignaremos los siguientes valores binarios a la estradas:
+   #+begin_center
+   - E0 = 000
+   - E1 = 001
+   - E2 = 010
+   - E3 = 011
+   - E4 = 100
+   #+end_center
+#+attr_latex: float:nil
+#+caption: Contenido de la memoria
+#+begin_table
+\centering
+\begin{tabular}{|cccccc|ccccccccc|}
+\hline
+\multicolumn{6}{|c|}{\textbf{Dirección de memoria}} &
+  \multicolumn{9}{c|}{\textbf{Contenido de memoria}} \\ \hline
+\multicolumn{3}{|l|}{\textbf{E. Presente}} &
+  \multicolumn{3}{c|}{\textbf{Entradas}} &
+  \multicolumn{3}{c|}{\textbf{Liga}} &
+  \multicolumn{6}{c|}{\textbf{Salidas}} \\ \hline
+\multicolumn{1}{|l|}{} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{\textbf{X}} &
+  \multicolumn{1}{c|}{\textbf{y}} &
+  \textbf{z} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{l|}{} &
+  \multicolumn{1}{c|}{\textbf{s5}} &
+  \multicolumn{1}{c|}{\textbf{s4}} &
+  \multicolumn{1}{c|}{\textbf{s3}} &
+  \multicolumn{1}{c|}{\textbf{s2}} &
+  \multicolumn{1}{c|}{\textbf{s1}} &
+  \textbf{s0} \\ \hline
+\rowcolor[HTML]{EA9999}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  1 \\ \hline
+\rowcolor[HTML]{EA9999}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  1 \\ \hline
+\rowcolor[HTML]{EA9999}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  1 \\ \hline
+\rowcolor[HTML]{EA9999}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  1 \\ \hline
+\rowcolor[HTML]{EA9999}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  1 \\ \hline
+\rowcolor[HTML]{EA9999}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  1 \\ \hline
+\rowcolor[HTML]{EA9999}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  1 \\ \hline
+\rowcolor[HTML]{EA9999}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{EA9999}1} &
+  1 \\ \hline
+\rowcolor[HTML]{F9CB9C}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  0 \\ \hline
+\rowcolor[HTML]{F9CB9C}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  0 \\ \hline
+\rowcolor[HTML]{F9CB9C}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  0 \\ \hline
+\rowcolor[HTML]{F9CB9C}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  0 \\ \hline
+\rowcolor[HTML]{F9CB9C}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  0 \\ \hline
+\rowcolor[HTML]{F9CB9C}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  0 \\ \hline
+\rowcolor[HTML]{F9CB9C}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  0 \\ \hline
+\rowcolor[HTML]{F9CB9C}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{F9CB9C}0} &
+  0 \\ \hline
+\rowcolor[HTML]{FFE599}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  1 \\ \hline
+\rowcolor[HTML]{FFE599}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  1 \\ \hline
+\rowcolor[HTML]{FFE599}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  1 \\ \hline
+\rowcolor[HTML]{FFE599}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  1 \\ \hline
+\rowcolor[HTML]{FFE599}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  1 \\ \hline
+\rowcolor[HTML]{FFE599}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  1 \\ \hline
+\rowcolor[HTML]{FFE599}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  1 \\ \hline
+\rowcolor[HTML]{FFE599}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{FFE599}0} &
+  1 \\ \hline
+\rowcolor[HTML]{B6D7A8}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  0 \\ \hline
+\rowcolor[HTML]{B6D7A8}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  0 \\ \hline
+\rowcolor[HTML]{B6D7A8}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  0 \\ \hline
+\rowcolor[HTML]{B6D7A8}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  0 \\ \hline
+\rowcolor[HTML]{B6D7A8}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  0 \\ \hline
+\rowcolor[HTML]{B6D7A8}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  0 \\ \hline
+\rowcolor[HTML]{B6D7A8}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  0 \\ \hline
+\rowcolor[HTML]{B6D7A8}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{B6D7A8}1} &
+  0 \\ \hline
+\rowcolor[HTML]{A2C4C9}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  0 \\ \hline
+\rowcolor[HTML]{A2C4C9}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  0 \\ \hline
+\rowcolor[HTML]{A2C4C9}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  0 \\ \hline
+\rowcolor[HTML]{A2C4C9}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  0 \\ \hline
+\rowcolor[HTML]{A2C4C9}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  0 \\ \hline
+\rowcolor[HTML]{A2C4C9}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  0 \\ \hline
+\rowcolor[HTML]{A2C4C9}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  0 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  0 \\ \hline
+\rowcolor[HTML]{A2C4C9}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  1 &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}1} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  \multicolumn{1}{c|}{\cellcolor[HTML]{A2C4C9}0} &
+  0 \\ \hline
+\end{tabular}
+#+end_table
+* Conclusiones
+* Referencias
