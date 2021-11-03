@@ -44,7 +44,7 @@
 \newcommand{\tituloTrabajo}{Practica No. 4\\Construcción de Máquinas de
   estados Usando Memorias Direccionamiento
   Entrada - Estado}
-\newcommand{\fechaEntrega}{07 de octubre de 2021}
+\newcommand{\fechaEntrega}{14 de octubre de 2021}
 
 \usepackage{subfiles}
 \usepackage[backend=biber,style=apa]{biblatex}
@@ -73,11 +73,13 @@ versátil.
   \includegraphics[width=0.6\textwidth]{./img/1.png}
   \caption{Direccionamiento Entrada-Estado}
 \end{figure}
+\newpage{}
 \section{Objetivo}
 \label{sec:org8bfa7f0}
 Familiarizar al alumno en el conocimiento de construcción de máquinas de
 estados usando direccionamiento de memorias con el método de
 direccionamiento entrada--estado.
+
 \section{Desarrollo}
 \label{sec:orgac7043c}
 Empezamos analizando siguiente figura, donde esta es una carta ASM
@@ -85,10 +87,9 @@ donde secuencialmente otorgamos los valores binarios de los estados y para
 los estados de prueba
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.6\textwidth]{./img/2.png}
+  \includegraphics[width=0.4\textwidth]{./img/2.png}
   \caption{\label{fig:2}Carta ASM}
 \end{figure}
-\\
 \begin{center}
     \captionof{table}{Valores binarios a estados}\label{tab:1}
   \begin{tabular}{rl}
@@ -104,14 +105,14 @@ los estados de prueba
 \end{center}
 \begin{center}
   \captionof{table}{Valores binarios de las entradas}\label{tab:2}
-\begin{tabular}{rl}
-\multicolumn{2}{c}{\cellcolor[HTML]{EA4335}{\color[HTML]{FFFFFF} \textbf{Prueba}}} \\
-x & 000 \\
-y & 001 \\
-z & 010 \\
-w & 011 \\
-aux & 100
-\end{tabular}
+  \begin{tabular}{rl}
+    \multicolumn{2}{c}{\cellcolor[HTML]{EA4335}{\color[HTML]{FFFFFF} \textbf{Prueba}}} \\
+    x & 000 \\
+    y & 001 \\
+    z & 010 \\
+    w & 011 \\
+    aux & 100
+  \end{tabular}
 \end{center}
 Una vez especificados nuestros estados y entradas, resolvemos la tabla de
 verdad.
@@ -122,18 +123,114 @@ verdad.
 \end{center}
 Con los valores obtenidos, implementamos la memoria en Quartus con la
 programación VHDL obteniendo el siguiente código:
+\begin{code}
+  \inputminted{vhdl}{./rom.vhd}
+  \caption{\texttt{rom.vhd}}
+\end{code}
+A continuación escribimos el bloque que realiza el direccionamiento
+entrada-estado.
+\begin{code}
+  \inputminted{vhdl}{./registro_entrada.vhd}
+  \caption{\texttt{registro_entrada.vhd}}
+\end{code}
+\begin{code}
+  \inputminted{vhdl}{./registro_salida.vhd}
+  \caption{\texttt{registro_salida.vhd}}
+\end{code}
+Ahora escribimos el separador de datos almacenados en memoria para así
+asignar el estado siguiente, valor de prueba, ligas falsas y las ligas
+verdaderas, donde estas dos últimas son la salida del bloque.
+\begin{code}
+  \inputminted{vhdl}{./separador.vhd}
+  \caption{\texttt{separador.vhd}}
+\end{code}
+Para realizar la elección correcta de las salidas, teniendo en cuenta el valor
+de las entradas, se generó el selector de entrada para poder enviar un valor
+binario correspondiente a cada entrada; El selector de la liga también se
+generó para poder elegir entre una liga falsa o una liga real, y, por lo tanto, un
+selector de inicio para obtener un rendimiento adecuado de acuerdo con la
+liga que ha ocurrido
+\begin{code}
+  \inputminted{vhdl}{./selector_entrada.vhd}
+  \caption{\texttt{selector_entrada.vhd}}
+\end{code}
+\begin{code}
+  \inputminted{vhdl}{./selector_liga.vhd}
+  \caption{\texttt{selector_liga.vhd}}
+\end{code}
+\begin{code}
+  \inputminted{vhdl}{./selector_salida.vhd}
+  \caption{\texttt{selector_salida.vhd}}
+\end{code}
+\newpage{}
+\subsection{Diagrama}\label{sec:diagrama}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./img/dia.png}
+  \caption{Diagrama de Bloques}
+\end{figure}
+
+\subsection{Simulación}\label{sec:simulacion}
+Una vez obtenido el diagrama esquemático proseguimos con la simulación.
+Para el siguiente ejemplo se considera que todas las entradas están en 0
+menos W.
+
+Sigamos la trayectoria en la carta ASM. Empezamos en el estado A y
+pasamos al B, en este primer caso, la salida corresponde a 00000.
+Posteriormente en el estado B se evalúa Z y pasa al estado C, este paso tiene
+como salida en alto a s1.
+
+El siguiente paso es del estado C al D con salida $00000$. Posteriormente, en
+el estado D se evalúa X, como está en 0 pasa al estado F y solo se activa s3.
+
+Por último, del estado F regresa al estado D con ninguna salida en alto y como
+X no cambia su valor, se queda en un ciclo.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./img/ruta.png}
+  \caption{Ruta Carta ASM}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{./img/sim.png}
+  \caption{Simulación}
+\end{figure}
+
 \section{Conclusiones}
 \label{sec:orgdab2190}
 
 \subsection*{Monsalvo Bolaños Melissa Monserrat}\label{sec:mons-bolan-melissa}
 
+Con el desarrollo de esta práctica pudimos implementar la aplicación de una
+carta ASM por el método de direccionamiento de entrada estado. Pudimos
+observar que, a diferencia del método de direccionamiento por trayectoria,
+este método requiere de más elementos. Y pudimos percatarnos de que a
+diferencia del método anterior aquí no podemos evaluar múltiples entradas,
+sin embargo observamos las bondades que nos ofrece, como la significativa
+reducción en la memoria.
+
 \subsection*{Romero Andrade Cristian}
 \label{sec:romero-andr-crist}
 
-\subsection*{Conclusiones en equipo}
-\label{sec:concl-en-equipo}
+La implementación de la carta ASM usando direccionamiento estrada-estado
+fue sencilla puesto que el uso de memorias “traduce” la tabla de verdad que se
+obtuvo al resolver la carta. Consecuentemente se logró desarrollar los bloques
+en código vhdl para lograr que concuerde la simulación con la carta y asu vez
+la tabla de verdad
+
+\subsection*{Conclusiones en equipo}\label{sec:concl-en-equipo}
+
+En la presente se logró implementar en VHDL la carta ASM usando
+direccionamiento entrada-estado, en mayor parte se utilizó el mismo diseño
+de la práctica anterior con unos cambios como por ejemplo la selección de
+liga y el de salidas para poder implementar dicho direccionamiento.
 
 \nocite{*}
 \addcontentsline{toc}{section}{Referencias}
 \printbibliography{}
+\newpage{}
+
+\listoftables{}
+\listoffigures{}
+\listoflistings{}
 \end{document}

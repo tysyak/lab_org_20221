@@ -4,7 +4,7 @@ entity registro_entrada is port(
   clk, rst : in std_logic;
   estado_siguiente : in std_logic_vector(2 downto 0);
   data_out : out std_logic_vector(2 downto 0);
-  mon_estado_siguiente: out td_logic_vector(2 downto 0)
+  mon_estado_siguiente: out std_logic_vector(2 downto 0)
   );
 end registro_entrada;
 architecture behavioral of registro_entrada is
