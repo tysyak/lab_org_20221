@@ -1,0 +1,139 @@
+% Created 2021-11-03 mié 11:39
+% Intended LaTeX compiler: lualatex
+\documentclass[table]{scrartcl}
+\usepackage[left=1.5cm,right=1.5cm,bottom=2.5cm,letterpaper]{geometry}
+\usepackage[spanish, es-nodecimaldot, es-tabla]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{blindtext}
+\usepackage{multicol}
+\usepackage{subfigure}
+\usepackage[most]{tcolorbox}
+\usepackage{etoolbox}
+\usepackage{minted}
+\usepackage{hyperref}
+% \usepackage[table,xcdraw]{xcolor}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage[default]{comfortaa}
+\usepackage[T1]{fontenc}
+
+\usepackage{caption}
+\usepackage{breqn}
+\usemintedstyle{emacs}
+\usepackage[ruled,vlined]{algorithm2e}
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\definecolor{custom}{HTML}{F8F8F8}
+\setminted{frame=lines,breaklines=true,bgcolor=custom,fontsize=\scriptsize,linenos}
+\renewcommand\listoflistingscaption{Índice de \listingscaption\@s}
+\renewcommand{\listingscaption}{Código}
+\BeforeBeginEnvironment{listing}{\begin{code}}
+  \AfterEndEnvironment{listing}{\end{code}}
+\BeforeBeginEnvironment{minted}{\begin{code}}
+  \AfterEndEnvironment{minted}{\end{code}}
+\author{Monsalvo Bolaños Melissa Monserrat y Romero Andrade Cristian}
+\date{\today}
+\title{Practica 4}
+\hypersetup{
+  pdfauthor={Monsalvo Bolaños Melissa Monserrat y Romero Andrade Cristian},
+  pdftitle={Practica 3},
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 27.2 (Org mode 9.6)},
+  pdflang={English}}
+
+\newcommand{\tituloTrabajo}{Practica No. 4\\Construcción de Máquinas de
+  estados Usando Memorias Direccionamiento
+  Entrada - Estado}
+\newcommand{\fechaEntrega}{07 de octubre de 2021}
+
+\usepackage{subfiles}
+\usepackage[backend=biber,style=apa]{biblatex}
+\addbibresource{../bib.bib}
+
+\begin{document}
+\input{../portada.tex}
+\maketitle{}
+\tableofcontents{}
+\section{Introducción}
+\label{sec:org6bd500f}
+El direccionamiento entrada-estado se restringe a cartas ASM con una sola
+entrada por estado. Una nueva porción de la palabra de memoria contiene
+una representación binaria de la entrada a probar en cada estado, esta parte
+es llamada “PRUEBA”. Con esta representación binaria un selector de entrada
+elige una de las variables de entrada. La parte de liga tiene dos estados
+siguientes, encogiéndose uno por el selector de liga, en base a la entrada
+seleccionada por la parte de prueba. Si el valor de la entrada seleccionada
+por el selector de entradas es igual a cero, entonces el selector de liga elegirá
+la liga falsa, en caso contrario se seleccionará la liga verdadera.
+Este método tiene grandes ventajas como el ahorro de memoria, que
+cuenta con pocos elementos de hardware y que representa un sistema muy
+versátil.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./img/1.png}
+  \caption{Direccionamiento Entrada-Estado}
+\end{figure}
+\section{Objetivo}
+\label{sec:org8bfa7f0}
+Familiarizar al alumno en el conocimiento de construcción de máquinas de
+estados usando direccionamiento de memorias con el método de
+direccionamiento entrada--estado.
+\section{Desarrollo}
+\label{sec:orgac7043c}
+Empezamos analizando siguiente figura, donde esta es una carta ASM
+donde secuencialmente otorgamos los valores binarios de los estados y para
+los estados de prueba
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./img/2.png}
+  \caption{\label{fig:2}Carta ASM}
+\end{figure}
+\\
+\begin{center}
+    \captionof{table}{Valores binarios a estados}\label{tab:1}
+  \begin{tabular}{rl}
+    \multicolumn{2}{c}{\cellcolor[HTML]{EA4335}{\color[HTML]{FFFFFF} \textbf{Entradas}}} \\
+    ESTA & 000 \\
+    ESTB & 001 \\
+    ESTC & 010 \\
+    ESTD & 011 \\
+    ESTE & 100 \\
+    ESTF & 101 \\
+    ESTG & 110
+\end{tabular}
+\end{center}
+\begin{center}
+  \captionof{table}{Valores binarios de las entradas}\label{tab:2}
+\begin{tabular}{rl}
+\multicolumn{2}{c}{\cellcolor[HTML]{EA4335}{\color[HTML]{FFFFFF} \textbf{Prueba}}} \\
+x & 000 \\
+y & 001 \\
+z & 010 \\
+w & 011 \\
+aux & 100
+\end{tabular}
+\end{center}
+Una vez especificados nuestros estados y entradas, resolvemos la tabla de
+verdad.
+\begin{center}
+  \captionof{table}{Tabla de verdad obtenida}\label{tab:3}
+  \scriptsize
+  \input{./tabla.tex}
+\end{center}
+Con los valores obtenidos, implementamos la memoria en Quartus con la
+programación VHDL obteniendo el siguiente código:
+\section{Conclusiones}
+\label{sec:orgdab2190}
+
+\subsection*{Monsalvo Bolaños Melissa Monserrat}\label{sec:mons-bolan-melissa}
+
+\subsection*{Romero Andrade Cristian}
+\label{sec:romero-andr-crist}
+
+\subsection*{Conclusiones en equipo}
+\label{sec:concl-en-equipo}
+
+\nocite{*}
+\addcontentsline{toc}{section}{Referencias}
+\printbibliography{}
+\end{document}
