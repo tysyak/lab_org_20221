@@ -1,0 +1,15 @@
+#+TITLE: Readme
+
+para compilar en cada carpeta ejecutar el comando similar
+#+begin_src bash
+P=practica_<numero>.tex lualatex -shell-escape -interaction nonstopmode -output-directory ./ $P
+#+end_src
+
+Se recomienda =lualatex= o =xelatex=
+
+Se debe contar con miktex(windows) o texlive(linux)
+
+PDFs de las Practicas
++ [[./3/practica_3.pdf]]
++ [[./4/practica_4.pdf]]
++ [[./5/practica_5.pdf]]

@@ -79,7 +79,7 @@ PLLJ_PLLSPE_INFO.txt
 *.bcf
 *.log
 *.out
-*.pdf
+# *.pdf
 *.xml
 *.gz
 _minted*
