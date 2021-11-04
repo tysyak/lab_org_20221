@@ -1,7 +1,7 @@
  % Created 2021-11-03 mié 11:39
 % Intended LaTeX compiler: lualatex
 \documentclass[table]{scrartcl}
-\usepackage[left=1.5cm,right=1.5cm,bottom=2.5cm,letterpaper]{geometry}
+\usepackage[left=1.5cm,right=1.5cm,bottom=3cm,top=2.5cm,letterpaper]{geometry}
 \usepackage[spanish, es-nodecimaldot, es-tabla]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{blindtext}
@@ -16,14 +16,14 @@
 \usepackage{multirow}
 \usepackage[default]{comfortaa}
 \usepackage[T1]{fontenc}
-
+\usepackage{float}
 \usepackage{caption}
 \usepackage{breqn}
-\usemintedstyle{emacs}
+\usemintedstyle{paraiso-light}
 \usepackage[ruled,vlined]{algorithm2e}
 \newenvironment{code}{\captionsetup{type=listing}}{}
-\definecolor{custom}{HTML}{F8F8F8}
-\setminted{frame=lines,breaklines=true,bgcolor=custom,fontsize=\scriptsize,linenos}
+\definecolor{custom}{HTML}{E7E9DB}
+\setminted{frame=single,xleftmargin=1cm,breaklines=true,bgcolor=custom,fontsize=\scriptsize,linenos}
 \renewcommand\listoflistingscaption{Índice de \listingscaption\@s}
 \renewcommand{\listingscaption}{Código}
 \BeforeBeginEnvironment{listing}{\begin{code}}
@@ -55,6 +55,9 @@ Direccionamiento Implícito}
 \date{}
 \maketitle{}
 \tableofcontents{}
+\section{Objetivo}\label{sec:org8bfa7f0}
+Familiarizar al alumno en el conocimiento de construcción de máquinas de estados
+usando direccionamiento de memorias con el método de direccionamiento implícito.
 \section{Introducción}
 Este tipo de direccionamiento utiliza solamente un campo de liga. Una variable
 de entrada seleccionada por el campo de prueba, y VF, son las que deciden si se
@@ -62,22 +65,24 @@ utiliza la dirección de liga (se carga el valor de liga en el contador) o no (s
 incrementa el contador en una unidad). El campo VF (Verdadero-Falso) sirve para
 indicarle a la lógica cuánto debe valer la variable de entrada, para así cargar
 en el contador el valor de la liga y hacer el salto.
-\begin{figure}[htbp]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.4\textwidth]{./img/1.png}
   \caption{Diagrama de direccionamiento implícito}\label{fig:1}
 \end{figure}
+
 El campo de verdadero-falso (VF) tiene la utilidad de indicar el calo de la
 variable de entrada con el objetivo de cargar el contador el valor de la liga y
 realizar el salto.
-\begin{figure}[htbp]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.4\textwidth]{./img/2.png}
   \caption{Direccionamiento Implicito.}\label{fig:2}
 \end{figure}
+
 En la tabla~\ref{tab:1}  muestra la relación de VF y la variable de entrada con
 cadenas de incremento y carga
-\begin{table}
+\begin{table}[H]
   \centering
   \caption{Relación VF y Q}\label{tab:1}
   \begin{tabular}{|cc|c|c|}
@@ -89,6 +94,7 @@ cadenas de incremento y carga
     1 & 1 & 0 & 1 \\ \hline
   \end{tabular}
 \end{table}
+
 No obstante el diseño original no esta diseño para aceptar salidas
 condicionales, es por ello que se propone las siguiente forma.
 \begin{figure}[htbp]
@@ -97,17 +103,16 @@ condicionales, es por ello que se propone las siguiente forma.
   \caption{Diagrama Modificado}\label{fig:3}
 \end{figure}
 
-\section{Objetivo}\label{sec:org8bfa7f0}
-Familiarizar al alumno en el conocimiento de construcción de máquinas de estados
-usando direccionamiento de memorias con el método de direccionamiento implícito.
+
 \newpage{}
 \section{Desarrollo}\label{sec:orgac7043c}
 Partimos del análisis de la carta Asm
-\begin{figure}[htbp]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.6\textwidth]{./img/4.png}
+  \includegraphics[width=0.5\textwidth]{./img/4.png}
   \caption{Carta ASM}\label{fig:4}
 \end{figure}
+
 Asignamos a cada entrada y estado un valor binario
 \begin{table}[H]
   \centering
@@ -157,6 +162,8 @@ Posteriormente rellenamos la tabla de verdad conforme a la carta ASM
 Una vez obtenido el comportamiento de la carta ASM, proseguimos a programar los
 componentes de la Figura 1 en Quartus
 
+\subsection{Códigos}\label{sec:codigos}
+
 \paragraph{Memoria}
 
 Se retomó el código de prácticas anteriores y se llenó el contenido de la
@@ -172,7 +179,7 @@ contenido de dicha localidad.
 
 Este bloque separa la salida en memoria en los campos que necesitamos.
 \begin{code}
-  \texttt{separador.vhd}
+  \caption{\texttt{separador.vhd}}
   \inputminted{vhdl}{./separador.vhd}
 \end{code}
 
@@ -209,22 +216,28 @@ utilizará la salida para enviar el estado siguiente.
     \caption{Diagrama}
 \end{figure}
 
-
+\newpage{}
 
 \subsection{Simulación}\label{sec:simulacion}
+Para este caso simularemos todas las entradas en $0$
 \begin{figure}[H]
   \centering
-  \begin{subfigure}
-    \centering
-    \includegraphics[width=\textwidth]{./img/sim1}
-  \end{subfigure}
+    \includegraphics[width=0.5\textwidth]{./img/ruta_asm}
+  \caption{Simulación}\label{fig:ruta}
+\end{figure}
 
-  \begin{subfigure}
-    \centering
-    \includegraphics[width=\textwidth]{./img/sim2}
-  \end{subfigure}
-  \caption{Simulación}
-  \label{fig:sim}
+\begin{enumerate}
+  \item Podemos observar que en el estado 0 se evalúa la variable V, como está
+        es 0 se pasa al estado 1 teniendo como salidas a S0 y S1.
+  \item Luego, en el estado 1 se evalúa x, como esta esta en 0 pasa al estado 7
+        teniendo como salida s3, s0 y s1.
+  \item Por último, se realiza un salto condicional al estado 1 con con todas las
+        salidas en bajo, a partir de aquí se repiten los pasos 2 y 3.
+\end{enumerate}
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=\textwidth]{./img/sim}
+  \caption{Simulación}\label{fig:sim}
 \end{figure}
 
 \section{Conclusiones}

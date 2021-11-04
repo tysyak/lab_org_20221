@@ -4,24 +4,21 @@ use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
 
 entity selector_salida is port (
-  carga : in std_logic;
-  incrementa : in std_logic;
-  salida_incremento : in std_logic_vector (3 downto 0);
-  salida_carga : in std_logic_vector (3 downto 0);
+  qsel : in std_logic;
+  salida_falsa : in std_logic_vector (3 downto 0);
+  salida_verdadera : in std_logic_vector (3 downto 0);
   salida : out std_logic_vector (3 downto 0)
   );
 end selector_salida;
 
 architecture behavioral of selector_salida is
 begin
-  process (carga, incrementa)
+  process (qsel)
   begin
-    if carga = '1' then
-      salida <= salida_carga;
-    elsif incrementa = '1' then
-      salida <= salida_incremento;
+    if qsel = '1' then
+      salida <= salida_verdadera;
     else
-      salida <= "1000";
+      salida <= salida_falsa;
     end if;
   end process;
 end behavioral;

@@ -21,7 +21,7 @@ begin
   begin
     if (rst='1') then
       cuenta <= 0;
-    elsif(rising_edge(clk)) then
+    elsif(falling_edge(clk)) then
       if load = '1' then
         cuenta<= to_integer(unsigned(liga));
       else

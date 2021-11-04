@@ -6,8 +6,8 @@ use ieee.std_logic_unsigned.all;
 entity logica is port (
   vf : in std_logic;
   prueba : in std_logic_vector(2 downto 0);
-  entrada : in std_logic_vector(2 downto 0);
-  mon_prueba: out std_logic_vector(2 downto 0);
+  entrada : in std_logic_vector(4 downto 0);
+  qsel: out std_logic;
   carga : out std_logic;
   incrementa : out std_logic
   );
@@ -19,37 +19,15 @@ architecture behavioral of logica is
 begin
   process (prueba)
   begin
-    case(entrada) is
+    case(prueba) is
       when "000" =>
-        if entrada = prueba then
-          qset <= '1';
-        else
-          qset <= '0';
-        end if;
+        qset <= entrada(4);
       when "001" =>
-        if entrada = prueba then
-          qset <= '1';
-        else
-          qset <= '0';
-        end if;
+        qset <= entrada(3);
       when "010" =>
-        if entrada = prueba then
-          qset <= '1';
-        else
-          qset <= '0';
-        end if;
+        qset <= entrada(2);
       when "011" =>
-        if entrada = prueba then
-          qset <= '1';
-        else
-          qset <= '0';
-        end if;
-      when "100" =>
-        if entrada = prueba then
-          qset <= '1';
-        else
-          qset <= '0';
-        end if;
+        qset <= entrada(1);
       when others =>
         qset <= '0';
     end case;
@@ -57,11 +35,8 @@ begin
 
   process (qset)
   begin
-    if qset = '1' xor vf='1' then
-      xor_res <= '1';
-    else
-      xor_res <= '0';
-    end if;
+    xor_res <= qset xor vf;
+		qsel <= qset;
   end process;
 
   process(xor_res)
