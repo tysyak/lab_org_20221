@@ -1,0 +1,26 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {spanish}{}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1}Introducción}{2}{section.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2}Objetivo}{4}{section.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3}Desarrollo}{4}{section.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\nonumberline Memoria}{5}{paragraph*.10}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\nonumberline Separador}{7}{paragraph*.13}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\nonumberline Contador}{7}{paragraph*.16}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\nonumberline Lógica}{8}{paragraph*.19}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\nonumberline Selector de salida}{9}{paragraph*.22}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1}Simulación}{10}{subsection.3.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4}Conclusiones}{10}{section.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{Referencias}{10}{section*.26}%
+\defcounter {refsection}{0}\relax 
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
