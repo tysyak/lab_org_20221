@@ -121,7 +121,7 @@ https://fpgasoftware.intel.com/eula.
 )
 (pin
 	(output)
-	(rect 24 408 200 424)
+	(rect 144 424 320 440)
 	(text "OUTPUT" (rect 137 0 175 10)(font "Arial" (font_size 6)))
 	(text "vec" (rect 5 0 22 13)(font "Intel Clear" ))
 	(pt 176 8)
@@ -138,7 +138,7 @@ https://fpgasoftware.intel.com/eula.
 )
 (pin
 	(output)
-	(rect 24 424 200 440)
+	(rect 144 376 320 392)
 	(text "OUTPUT" (rect 137 0 175 10)(font "Arial" (font_size 6)))
 	(text "map_li" (rect 53 0 87 13)(font "Intel Clear" ))
 	(pt 176 8)
@@ -398,23 +398,15 @@ https://fpgasoftware.intel.com/eula.
 	(bus)
 )
 (connector
-	(pt 8 248)
-	(pt 8 384)
-)
-(connector
-	(pt 8 384)
-	(pt 320 384)
-)
-(connector
 	(pt 192 400)
 	(pt 320 400)
 )
 (connector
-	(pt 200 416)
-	(pt 320 416)
+	(pt 8 416)
+	(pt 8 248)
 )
 (connector
-	(pt 200 432)
-	(pt 320 432)
+	(pt 8 416)
+	(pt 320 416)
 )
 (junction (pt 736 216))

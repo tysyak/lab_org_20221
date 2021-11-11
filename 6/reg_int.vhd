@@ -23,7 +23,7 @@ begin
 	
 	process (valor_interno, VECT)
 	begin
-		if VECT = '0' then
+		if VECT = '1' then
 			SALIDA <= valor_interno;
 		else
 			SALIDA <= "ZZZZ";

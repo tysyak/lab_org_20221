@@ -9,7 +9,7 @@ entity registro is
 end registro;
 
 architecture Behavioral of registro is
-signal valor_interno : std_logic_vector (3 downto 0) := B"0000";
+signal valor_interno : std_logic_vector (3 downto 0);
 begin
 	process (RELOJ, RESET, ENTRADA)
 	begin		

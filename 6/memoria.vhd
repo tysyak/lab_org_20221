@@ -57,7 +57,7 @@ architecture behavioral of memoria is
     prueba <= datos(20 downto 19);
     vf <= datos(18);
     mi <= datos(17 downto 16);
-    if pl = '0' then
+    if pl = '1' then
       liga <= datos(15 downto 12);
     else
       liga <= "ZZZZ";

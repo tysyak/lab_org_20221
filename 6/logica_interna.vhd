@@ -20,17 +20,17 @@ begin
 	   pl <= '0';map_li <= '0';vect <= '0';sel <= '0';
 		
     elsif (mi = "01" and cc = '0') then
-	   pl <= '1';map_li <= '0';vect <= '0';sel <= '1';
-    elsif (mi = "01" and cc = '1') then
 	   pl <= '1';map_li <= '0';vect <= '0';sel <= '0';
+    elsif (mi = "01" and cc = '1') then
+	   pl <= '1';map_li <= '0';vect <= '0';sel <= '1';
 		
 	 elsif mi = "10" then
 	   pl <= '0';map_li <= '1';vect <= '0';sel <= '1';
 		
     elsif (mi = "11" and cc = '0') then
-	   pl <= '0';map_li <= '0';vect <= '1';sel <= '1';
-    elsif (mi = "11" and cc = '1') then
 	   pl <= '0';map_li <= '0';vect <= '1';sel <= '0';
+    elsif (mi = "11" and cc = '1') then
+	   pl <= '0';map_li <= '0';vect <= '1';sel <= '1';
     end if;
   end process;
 end Behavioral;

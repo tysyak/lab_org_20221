@@ -23,7 +23,7 @@ begin
 	
 	process (valor_interno, MAP_LI)
 	begin
-		if MAP_LI = '0' then
+		if MAP_LI = '1' then
 			SALIDA <= valor_interno;
 		else
 			SALIDA <= "ZZZZ";
