@@ -42,7 +42,7 @@
   pdflang={English}}
 
 \newcommand{\tituloTrabajo}{Práctica No 6\\Secuenciador básico}
-\newcommand{\fechaEntrega}{21 de octubre de 2021}
+% \newcommand{\fechaEntrega}{21 de octubre de 2021}
 
 \usepackage{subfiles}
 \usepackage[backend=biber,style=apa]{biblatex}
@@ -249,15 +249,30 @@ saltos de transferencia de transferencia del estado 4:
   \includegraphics[width=\textwidth]{./img/sim3}\\
   \caption{Simulaciones}\label{fig:sim}
 \end{figure}
+\newpage{}
 
 \section{Conclusiones}
 \label{sec:conclusiones}
 
 \paragraph{Monsalvo Bolaños Melissa Monserrat}
 
+A través del desarrollo de esta práctica pudimos implementar un secuenciador
+básico. Determinamos la lógica para la asignación del estado siguiente con base
+en la micro instrucción seleccionada, activando el registro que provee el
+estado, ya sea el de interrupción, el Registro de micro-programa, el registro de
+transformación o la liga.
+
+Así mismo, se decidió tomar el ```camino largo'' para el desarrollo de la práctica,
+de este modo, pudimos conocer a profundidad las partes involucradas en el
+desarrollo del secuenciador.
+
 \paragraph{Romero Andrade Cristian}
 
-\newpage{}
+Esta practica estaba dividida en dos partes, en la cual se tenia que diseñar la
+lógica del secuenciador y aparte pasar y decir que acciones tomar al
+secuenciador. Se implemento la carta ASM usando las MI que nosotros definimos e
+implementamos para desarrollar la practica.
+
 \nocite{*}
 \addcontentsline{toc}{section}{Referencias}
 \printbibliography{}
