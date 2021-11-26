@@ -83,3 +83,5 @@ PLLJ_PLLSPE_INFO.txt
 *.xml
 *.gz
 _minted*
+*.toc
+*.lof
