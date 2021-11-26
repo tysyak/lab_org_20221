@@ -24,20 +24,30 @@ begin
   -- memory write block
   mem_write: process (address, csn, wn, data)
   begin
-	mem(0) <= x"00";
+	mem(0) <= x"C6";
+	mem(1) <= x"02";
+	mem(2) <= x"86";
+	mem(3) <= x"00";
+	mem(4) <= x"1B";
+	mem(5) <= x"7E";
+	mem(6) <= X"00";
+	mem(7) <= X"02";
+	
+
+
 	if (csn = '0' and wn = '0') then
 	  mem(conv_integer(unsigned(address))) <= data;
 	end if;
   end process;
 
-  res <= mem(64);  -- x"0040"
+  --res <= mem(64);  -- x"0040"
 
   tri_state: process (address, csn, wn, data_out)
   begin
 	if (csn = '0' and wn = '1') then
 	  data <= data_out;
 	else
-	  data <= (others => 'z');
+	  data <= (others => 'Z');
 	end if;
   end process;
 
